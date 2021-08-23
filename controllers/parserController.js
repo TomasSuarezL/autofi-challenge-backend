@@ -4,7 +4,8 @@ const { insert_cars } = require('../data/db');
 const config = require('../config.json');
 
 
-exports.parse_csv = function (req, res) {
+exports.parse_csv = function (req, res, next) {
+    try {
     const results = [];
     fs.createReadStream(req.file.path)
         .pipe(csv({ separator: ';' }))
@@ -17,5 +18,11 @@ exports.parse_csv = function (req, res) {
             })
             let inserted_cars = await insert_cars(cars);
             res.send(inserted_cars);
+        })
+        .on("error", (err) => {
+            next({status: 400, err});
         });
+    } catch(err) {
+        next({status: 400, message: err.message, stack: err.stack});
+    }
 };
