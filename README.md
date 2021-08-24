@@ -65,3 +65,10 @@ Without having to "hardcode" the column names and values. On the other hand, to 
     ]
 }
 ```
+
+### ToDos
+
+- :heavy_check_mark: ~~Change Project Organization to feature based~~.
+- :heavy_check_mark: ~~Change CSV reader to async~~
+- Add more tests
+- Extract Car logic to Car module

@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const parserRouter = require("./routes/parser");
+const parserRouter = require("./parser/parserRoutes");
 
 app.use("/parser/", parserRouter);
 

@@ -1,6 +1,6 @@
 const Database = require('sqlite-async')
 
-exports.init_db = async () => {
+exports.initDb = async () => {
     try {
         const db = await Database.open(':memory:')
 
@@ -35,8 +35,8 @@ exports.init_db = async () => {
  * @returns {Array<Object>} Array of cars inserted in DB.
  */
 
-exports.insert_cars = async (cars) => {
-    const db = await this.init_db()
+exports.insertCars = async (cars) => {
+    const db = await this.initDb()
     try {
 
         let inserts = cars.map(c => {
