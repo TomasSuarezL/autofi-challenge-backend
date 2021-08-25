@@ -47,7 +47,7 @@ let inserts = cars.map((c) => {
 });
 ```
 
-without having to "hardcode" the column names and values. On the other hand, to create the cars table, all the fields are "harcoded" based on the desired column layout provided. The column configuration is defined in a JSON named `config.json` in the project root, that has a `columns` key with a array of strings (representing the column names) as value.
+without having to "hardcode" the column names and values. On the other hand, to create the cars table, all the fields are "harcoded" based on the desired column layout provided. The column configuration is defined in a JSON file named `config.json` in the project root, that has a `columns` key with an array of strings (representing the column names) as value.
 
 ```
 {
@@ -66,7 +66,7 @@ without having to "hardcode" the column names and values. On the other hand, to 
 }
 ```
 
-Regarding the database, I assumed that we would want to receive a CSV file, parse it and store it in a single table. For that reason I add the provider column to the entries before inserting them. The result would be a single table containg the data from all the received files.
+Regarding the database, I assumed that when we receive a CSV file, we would want to parse it and store it in a single table. For this reason I add a provider field to the entries before inserting them. The result would be a single table containg the data from all the received files.
 Note: the in-memory db is closed after each request to prevent memory leaks, so this functionality isn´t fully implemented as explained. The simplest solution would be delaying db.close() to server shut down.
 
 ### ToDos
