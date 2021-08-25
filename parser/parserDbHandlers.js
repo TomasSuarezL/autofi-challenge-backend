@@ -1,4 +1,4 @@
-const Database = require("sqlite-async");
+const Database = require("better-sqlite3");
 const { AppError } = require("../lib/AppError");
 
 /**
@@ -7,11 +7,11 @@ const { AppError } = require("../lib/AppError");
  * @returns {Object} Sqlite db object.
  */
 
-exports.initDb = async () => {
+exports.initDb = () => {
   try {
-    const db = await Database.open(":memory:");
+    const db = new Database(":memory:", { verbose: console.log });
 
-    await db.run(`CREATE TABLE cars(
+    const create_table_stmt = db.prepare(`CREATE TABLE cars(
         UUID TEXT PRIMARY KEY,
         Provider TEXT,
         VIN TEXT,
@@ -23,6 +23,8 @@ exports.initDb = async () => {
         'Zip Code' TEXT,
         'Create Date' TEXT,
         'Update Date' TEXT)`);
+
+    create_table_stmt.run();
 
     return db;
   } catch (err) {
@@ -40,23 +42,27 @@ exports.initDb = async () => {
  * @returns {Array<Object>} Array of cars inserted in DB.
  */
 
-exports.insertCars = async (cars) => {
-  const db = await this.initDb();
+exports.insertCars = (cars) => {
+  const db = this.initDb();
   try {
     let inserts = cars.map((c) => {
-      return `INSERT INTO cars('${Object.keys(c).join("','")}') VALUES ('${Object.values(c).join(
-        "','"
-      )}');`;
+      return db.prepare(
+        `INSERT INTO cars('${Object.keys(c).join("','")}') VALUES ('${Object.values(c).join(
+          "','"
+        )}');`
+      );
     });
 
-    let db_inserts = inserts.map((i) => db.run(i));
-
-    await db.transaction((db) => {
-      return Promise.all(db_inserts);
+    const insertMany = db.transaction(() => {
+      for (const insert of inserts) insert.run();
     });
 
-    let inserted_cars = await db.all("SELECT * FROM cars");
+    insertMany();
+
+    let select_cars_stmt = db.prepare("SELECT * FROM cars");
+    const inserted_cars = select_cars_stmt.all()
     return inserted_cars;
+
   } catch (err) {
     throw new AppError(err.message, 500);
   } finally {

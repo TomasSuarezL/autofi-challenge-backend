@@ -12,4 +12,8 @@ app.use(function (err, req, res, next) {
   res.status(err.status).send(err.message);
 });
 
+process.on('uncaughtException', function (err) {
+  console.log('* [process.on(uncaughtException)]: err:', err);
+});
+
 module.exports = app;

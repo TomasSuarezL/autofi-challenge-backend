@@ -42,6 +42,17 @@ test("POST /parser/csv file with fewer columns (2, Mileage and Year). Should be 
         });
 });
 
+test("POST /parser/csv file without rows. Should be empty", async () => {
+    await supertest(app).post("/parser/csv")
+        .attach('data', 'tests/emptyData.csv')
+        .field('provider', 'Test')
+        .expect(200)
+        .then(async (response) => {
+            // Check the response
+            expect(response.body.length).toBe(0);
+        });
+});
+
 
 test("POST /parser/csv without file", async () => {
     await supertest(app).post("/parser/csv")

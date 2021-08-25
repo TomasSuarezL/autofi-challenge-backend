@@ -21,7 +21,7 @@ exports.parse_csv = async (req, res, next) => {
       return { ...Object.fromEntries(filtered), Provider: req.body.provider };
     });
 
-    let inserted_cars = await insertCars(cars);
+    let inserted_cars = insertCars(cars);
     res.send(inserted_cars);
   } catch (err) {
     next(err);
