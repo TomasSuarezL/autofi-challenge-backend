@@ -67,7 +67,7 @@ without having to "hardcode" the column names and values. On the other hand, to 
 ```
 
 Regarding the database, I assumed that we would want to receive a CSV file, parse it and store it in a single table. For that reason I add the provider column to the entries before inserting them. The result would be a single table containg the data from all the received files.
-Note: the in-memory db is closed after each request to prevent memory leaks, so this functionality isn´t fully implemented as explained. The simplest solution would be delaying the closing of the db until the server is shut down.
+Note: the in-memory db is closed after each request to prevent memory leaks, so this functionality isn´t fully implemented as explained. The simplest solution would be delaying db.close() to server shut down.
 
 ### ToDos
 
@@ -75,5 +75,3 @@ Note: the in-memory db is closed after each request to prevent memory leaks, so 
 - :heavy_check_mark: ~~Change CSV reader to async~~
 - :heavy_check_mark: ~~Add more tests~~
 - Extract Car logic to Car module
-
-[Whatsapp](https://web.whatsapp.com/)
